@@ -1,5 +1,7 @@
 # Virtualization
 
+Demo code: [demos/](demos/README.md), copied from https://jyywiki.cn/OS/demos/virtualization/
+
 - lect05 Programs and Processes
 - lect06 Process Address Spaces
 - lect07 Accessing OS Objects
