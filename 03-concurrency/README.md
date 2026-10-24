@@ -1,129 +1,129 @@
-# 并发
+# Concurrency
 
-- lect13 多处理器编程
-- lect14 并发控制：互斥
-- lect15 并发控制：同步 (1)
-- lect16 并发控制：同步 (2)
-- lect17 并发 Bugs 和应对
-- lect18 并行算法与数据结构
-- lect19 异步编程模型
-- lect20 CPU、GPU 和 SIMT 编程模型
-- lect21 数据中心和并发编程
+- lect13 Multiprocessor Programming
+- lect14 Concurrency Control: Mutual Exclusion
+- lect15 Concurrency Control: Synchronization (1)
+- lect16 Concurrency Control: Synchronization (2)
+- lect17 Concurrency Bugs and How to Handle Them
+- lect18 Parallel Algorithms and Data Structures
+- lect19 Asynchronous Programming Models
+- lect20 CPUs, GPUs and the SIMT Programming Model
+- lect21 Datacenters and Concurrent Programming
 
-## lect13 多处理器编程
+## lect13 Multiprocessor Programming
 
-讲义：https://jyywiki.cn/OS/2026/lect13.md
+Slides: https://jyywiki.cn/OS/2026/lect13.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect14 并发控制：互斥
+## lect14 Concurrency Control: Mutual Exclusion
 
-讲义：https://jyywiki.cn/OS/2026/lect14.md
+Slides: https://jyywiki.cn/OS/2026/lect14.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect15 并发控制：同步 (1)
+## lect15 Concurrency Control: Synchronization (1)
 
-讲义：https://jyywiki.cn/OS/2026/lect15.md
+Slides: https://jyywiki.cn/OS/2026/lect15.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect16 并发控制：同步 (2)
+## lect16 Concurrency Control: Synchronization (2)
 
-讲义：https://jyywiki.cn/OS/2026/lect16.md
+Slides: https://jyywiki.cn/OS/2026/lect16.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect17 并发 Bugs 和应对
+## lect17 Concurrency Bugs and How to Handle Them
 
-讲义：https://jyywiki.cn/OS/2026/lect17.md
+Slides: https://jyywiki.cn/OS/2026/lect17.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect18 并行算法与数据结构
+## lect18 Parallel Algorithms and Data Structures
 
-讲义：https://jyywiki.cn/OS/2026/lect18.md
+Slides: https://jyywiki.cn/OS/2026/lect18.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect19 异步编程模型
+## lect19 Asynchronous Programming Models
 
-讲义：https://jyywiki.cn/OS/2026/lect19.md
+Slides: https://jyywiki.cn/OS/2026/lect19.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect20 CPU、GPU 和 SIMT 编程模型
+## lect20 CPUs, GPUs and the SIMT Programming Model
 
-讲义：https://jyywiki.cn/OS/2026/lect20.md
+Slides: https://jyywiki.cn/OS/2026/lect20.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect21 数据中心和并发编程
+## lect21 Datacenters and Concurrent Programming
 
-讲义：https://jyywiki.cn/OS/2026/lect21.md
+Slides: https://jyywiki.cn/OS/2026/lect21.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 

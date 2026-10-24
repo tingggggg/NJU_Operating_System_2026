@@ -1,73 +1,73 @@
-# 绪论
+# Introduction
 
-- lect01 课程概述
-- lect02 应用视角的操作系统
-- lect03 硬件视角的操作系统
-- lect04 [H] Scaling Law 和 Agentic AI
-- lect30 课程总结
+- lect01 Course Overview
+- lect02 The OS from the Application's View
+- lect03 The OS from the Hardware's View
+- lect04 [H] Scaling Laws and Agentic AI
+- lect30 Course Summary
 
-## lect01 课程概述
+## lect01 Course Overview
 
-讲义：https://jyywiki.cn/OS/2026/lect1.md
+Slides: https://jyywiki.cn/OS/2026/lect1.md
 
-### 要点
-
-
-### 代码实验
+### Key Points
 
 
-### 疑问
+### Code Experiments
 
 
-## lect02 应用视角的操作系统
-
-讲义：https://jyywiki.cn/OS/2026/lect2.md
-
-### 要点
+### Questions
 
 
-### 代码实验
+## lect02 The OS from the Application's View
+
+Slides: https://jyywiki.cn/OS/2026/lect2.md
+
+### Key Points
 
 
-### 疑问
+### Code Experiments
 
 
-## lect03 硬件视角的操作系统
-
-讲义：https://jyywiki.cn/OS/2026/lect3.md
-
-### 要点
+### Questions
 
 
-### 代码实验
+## lect03 The OS from the Hardware's View
+
+Slides: https://jyywiki.cn/OS/2026/lect3.md
+
+### Key Points
 
 
-### 疑问
+### Code Experiments
 
 
-## lect04 [H] Scaling Law 和 Agentic AI
-
-讲义：https://jyywiki.cn/OS/2026/lect4.md
-
-### 要点
+### Questions
 
 
-### 代码实验
+## lect04 [H] Scaling Laws and Agentic AI
+
+Slides: https://jyywiki.cn/OS/2026/lect4.md
+
+### Key Points
 
 
-### 疑问
+### Code Experiments
 
 
-## lect30 课程总结
-
-讲义：https://jyywiki.cn/OS/2026/lect30.md
-
-### 要点
+### Questions
 
 
-### 代码实验
+## lect30 Course Summary
+
+Slides: https://jyywiki.cn/OS/2026/lect30.md
+
+### Key Points
 
 
-### 疑问
+### Code Experiments
+
+
+### Questions
 
 

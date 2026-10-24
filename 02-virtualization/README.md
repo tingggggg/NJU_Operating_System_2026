@@ -1,115 +1,115 @@
-# 虚拟化
+# Virtualization
 
-- lect05 程序和进程
-- lect06 进程的地址空间
-- lect07 访问操作系统对象
-- lect08 [H] 终端和 UNIX Shell
-- lect09 C 标准库和实现 (1)
-- lect10 C 标准库和实现 (2)
-- lect11 链接和加载
-- lect12 [H] 应用程序生态
+- lect05 Programs and Processes
+- lect06 Process Address Spaces
+- lect07 Accessing OS Objects
+- lect08 [H] Terminals and the UNIX Shell
+- lect09 The C Standard Library and Its Implementation (1)
+- lect10 The C Standard Library and Its Implementation (2)
+- lect11 Linking and Loading
+- lect12 [H] The Application Ecosystem
 
-## lect05 程序和进程
+## lect05 Programs and Processes
 
-讲义：https://jyywiki.cn/OS/2026/lect5.md
+Slides: https://jyywiki.cn/OS/2026/lect5.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect06 进程的地址空间
+## lect06 Process Address Spaces
 
-讲义：https://jyywiki.cn/OS/2026/lect6.md
+Slides: https://jyywiki.cn/OS/2026/lect6.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect07 访问操作系统对象
+## lect07 Accessing OS Objects
 
-讲义：https://jyywiki.cn/OS/2026/lect7.md
+Slides: https://jyywiki.cn/OS/2026/lect7.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect08 [H] 终端和 UNIX Shell
+## lect08 [H] Terminals and the UNIX Shell
 
-讲义：https://jyywiki.cn/OS/2026/lect8.md
+Slides: https://jyywiki.cn/OS/2026/lect8.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect09 C 标准库和实现 (1)
+## lect09 The C Standard Library and Its Implementation (1)
 
-讲义：https://jyywiki.cn/OS/2026/lect9.md
+Slides: https://jyywiki.cn/OS/2026/lect9.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect10 C 标准库和实现 (2)
+## lect10 The C Standard Library and Its Implementation (2)
 
-讲义：https://jyywiki.cn/OS/2026/lect10.md
+Slides: https://jyywiki.cn/OS/2026/lect10.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect11 链接和加载
+## lect11 Linking and Loading
 
-讲义：https://jyywiki.cn/OS/2026/lect11.md
+Slides: https://jyywiki.cn/OS/2026/lect11.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect12 [H] 应用程序生态
+## lect12 [H] The Application Ecosystem
 
-讲义：https://jyywiki.cn/OS/2026/lect12.md
+Slides: https://jyywiki.cn/OS/2026/lect12.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 

@@ -1,115 +1,115 @@
-# 持久化
+# Persistence
 
-- lect22 设备和驱动程序
-- lect23 持久数据的存储
-- lect24 文件系统 API (1)
-- lect25 文件系统 API (2)
-- lect26 文件系统实现
-- lect27 数据库系统
-- lect28 计算机系统安全
-- lect29 虚拟机和容器
+- lect22 Devices and Drivers
+- lect23 Storing Persistent Data
+- lect24 File System API (1)
+- lect25 File System API (2)
+- lect26 File System Implementation
+- lect27 Database Systems
+- lect28 Computer System Security
+- lect29 Virtual Machines and Containers
 
-## lect22 设备和驱动程序
+## lect22 Devices and Drivers
 
-讲义：https://jyywiki.cn/OS/2026/lect22.md
+Slides: https://jyywiki.cn/OS/2026/lect22.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect23 持久数据的存储
+## lect23 Storing Persistent Data
 
-讲义：https://jyywiki.cn/OS/2026/lect23.md
+Slides: https://jyywiki.cn/OS/2026/lect23.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect24 文件系统 API (1)
+## lect24 File System API (1)
 
-讲义：https://jyywiki.cn/OS/2026/lect24.md
+Slides: https://jyywiki.cn/OS/2026/lect24.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect25 文件系统 API (2)
+## lect25 File System API (2)
 
-讲义：https://jyywiki.cn/OS/2026/lect25.md
+Slides: https://jyywiki.cn/OS/2026/lect25.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect26 文件系统实现
+## lect26 File System Implementation
 
-讲义：https://jyywiki.cn/OS/2026/lect26.md
+Slides: https://jyywiki.cn/OS/2026/lect26.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect27 数据库系统
+## lect27 Database Systems
 
-讲义：https://jyywiki.cn/OS/2026/lect27.md
+Slides: https://jyywiki.cn/OS/2026/lect27.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect28 计算机系统安全
+## lect28 Computer System Security
 
-讲义：https://jyywiki.cn/OS/2026/lect28.md
+Slides: https://jyywiki.cn/OS/2026/lect28.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
-## lect29 虚拟机和容器
+## lect29 Virtual Machines and Containers
 
-讲义：https://jyywiki.cn/OS/2026/lect29.md
+Slides: https://jyywiki.cn/OS/2026/lect29.md
 
-### 要点
+### Key Points
 
 
-### 代码实验
+### Code Experiments
 
 
-### 疑问
+### Questions
 
 
