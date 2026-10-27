@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>minidbg breakpoint animation</title>
+<style>
+:root {
+  --bg: #ffffff; --surface: #f6f5f1; --text: #1f1e1b; --muted: #6b6a64;
+  --border: #c9c7bd; --accent: #185FA5;
+  --dbg-fill: #EEEDFE; --dbg-stroke: #534AB7; --dbg-text: #3C3489;
+  --k-fill: #F1EFE8; --k-stroke: #5F5E5A; --k-text: #444441;
+  --t-fill: #E1F5EE; --t-stroke: #0F6E56; --t-text: #085041;
+  --trap-fill: #FAECE7; --trap-text: #712B13; --trap-stroke: #D85A30;
+  --ok-fill: #E1F5EE; --ok-text: #085041; --ok-stroke: #1D9E75;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1c1c1a; --surface: #262624; --text: #ecebe6; --muted: #a3a29b;
+    --border: #55544f; --accent: #85B7EB;
+    --dbg-fill: #3C3489; --dbg-stroke: #AFA9EC; --dbg-text: #EEEDFE;
+    --k-fill: #444441; --k-stroke: #B4B2A9; --k-text: #F1EFE8;
+    --t-fill: #085041; --t-stroke: #5DCAA5; --t-text: #E1F5EE;
+    --trap-fill: #712B13; --trap-text: #FAECE7; --trap-stroke: #F0997B;
+    --ok-fill: #085041; --ok-text: #E1F5EE; --ok-stroke: #5DCAA5;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 15px/1.6 -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans CJK TC", "Noto Sans TC", sans-serif; }
+main { max-width: 720px; margin: 0 auto; padding: 20px 16px; }
+.lbl { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+.cell { font: 13px var(--mono); min-width: 36px; height: 32px; padding: 0 6px; display: flex;
+  align-items: center; justify-content: center; border: 1px solid var(--border); border-radius: 6px;
+  background: var(--surface); transition: background .3s, color .3s; }
+.cell.trap { background: var(--trap-fill); color: var(--trap-text); border-color: var(--trap-stroke); }
+.cell.restored { background: var(--ok-fill); color: var(--ok-text); border-color: var(--ok-stroke); }
+.state { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-end; margin: 4px 0 14px; }
+.panel { background: var(--surface); border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; min-height: 120px; }
+#tag { font-size: 12px; color: var(--accent); }
+#code { font: 13px var(--mono); margin: 2px 0 6px; white-space: pre-wrap; }
+#desc { font-size: 14px; color: var(--muted); }
+.controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+button { font: inherit; font-size: 14px; color: var(--text); background: transparent;
+  border: 1px solid var(--border); border-radius: 8px; padding: 4px 12px; cursor: pointer; }
+button:hover { background: var(--surface); }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); cursor: pointer; }
+.dot.on { background: var(--text); }
+#dots { display: flex; gap: 5px; margin-left: auto; }
+body.capture .controls { display: none; }
+</style>
+</head>
+<body>
+<main>
+<svg width="100%" viewBox="0 0 680 250" role="img" aria-label="minidbg, kernel and target exchanging messages">
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+  <rect x="40" y="10" width="140" height="40" rx="8" style="fill:var(--dbg-fill);stroke:var(--dbg-stroke)" stroke-width="0.5"/>
+  <text x="110" y="30" text-anchor="middle" dominant-baseline="central" style="fill:var(--dbg-text);font-size:14px;font-weight:500">minidbg</text>
+  <rect x="270" y="10" width="140" height="40" rx="8" style="fill:var(--k-fill);stroke:var(--k-stroke)" stroke-width="0.5"/>
+  <text x="340" y="30" text-anchor="middle" dominant-baseline="central" style="fill:var(--k-text);font-size:14px;font-weight:500">kernel / CPU</text>
+  <rect x="500" y="10" width="140" height="40" rx="8" style="fill:var(--t-fill);stroke:var(--t-stroke)" stroke-width="0.5"/>
+  <text x="570" y="30" text-anchor="middle" dominant-baseline="central" style="fill:var(--t-text);font-size:14px;font-weight:500">target</text>
+  <line x1="110" y1="50" x2="110" y2="240" style="stroke:var(--border)" stroke-dasharray="4 4"/>
+  <line x1="340" y1="50" x2="340" y2="240" style="stroke:var(--border)" stroke-dasharray="4 4"/>
+  <line x1="570" y1="50" x2="570" y2="240" style="stroke:var(--border)" stroke-dasharray="4 4"/>
+  <g id="hops"></g>
+  <circle id="ball" r="6" fill="#D85A30" cx="-20" cy="-20"/>
+</svg>
+
+<div class="state">
+  <div><div class="lbl">記憶體 @0x…139（8 bytes）</div><div id="mem" style="display:flex;gap:4px"></div></div>
+  <div><div class="lbl">rip</div><div id="rip" class="cell" style="width:72px">-</div></div>
+  <div><div class="lbl">target 狀態</div><div id="st" class="cell" style="width:88px;font-family:inherit">-</div></div>
+  <div><div class="lbl">命中次數</div><div id="hits" class="cell">0</div></div>
+</div>
+
+<div class="panel">
+  <div id="tag"></div>
+  <div id="code"></div>
+  <div id="desc"></div>
+</div>
+
+<div class="controls">
+  <button id="prev" aria-label="上一步">‹</button>
+  <button id="play">▶ 播放</button>
+  <button id="next" aria-label="下一步">›</button>
+  <button id="replay" aria-label="重播此步">↻</button>
+  <span id="pos" class="lbl" style="margin:0 0 0 6px"></span>
+  <div id="dots"></div>
+</div>
+</main>
+
+<script>
+const X = [110, 340, 570], D = 0, K = 1, T = 2;
+const HOP_MS = 650;
+const ORIG = ['55', '48', '89', 'e5', '89', '7d', 'fc', '8b'];
+const S = [
+  { tag: '起點', code: 'pid_t pid = fork();', hops: [[D, T, 'fork()']], mem: null, rip: '-', st: '子行程', hits: 0,
+    desc: 'debugger fork 出子行程。這時子行程還是 minidbg 的複本，target 還沒載入。' },
+  { tag: '起點', code: 'ptrace(PTRACE_TRACEME, 0, 0, 0);', hops: [[T, K, 'TRACEME']], mem: null, rip: '-', st: '子行程', hits: 0,
+    desc: '子行程告訴 kernel：「讓我的父行程追蹤我」。kernel 把 parent 記為 tracer。' },
+  { tag: '[A]', code: 'execv(argv[1], ...);', hops: [[T, K, 'execv'], [K, T, 'SIGTRAP']], mem: 'orig', rip: '-', st: '停住', hits: 0,
+    desc: 'exec 建立新的地址空間並 mmap 進 ELF。因為正在被追蹤，kernel 在第一條指令執行前送 SIGTRAP，讓它停住。' },
+  { tag: '[A]', code: 'waitpid(pid, &status, 0);', hops: [[K, D, 'waitpid 返回']], mem: 'orig', rip: '-', st: '停住', hits: 0,
+    desc: 'debugger 被喚醒。target 一條 user 指令都還沒跑，正是下斷點的時機。' },
+  { tag: '[B]', code: 'addr = load_base(pid) + 0x1139;', hops: [[D, K, '/proc/pid/maps'], [K, D, 'base 0x557d…e000']], mem: 'orig', rip: '-', st: '停住', hits: 0,
+    desc: 'PIE 的實際位址要等載入後才知道：base（maps 第一行）加上 nm 查到的 offset 0x1139。' },
+  { tag: '[B]', code: 'orig = ptrace(PTRACE_PEEKTEXT, pid, addr, 0);', hops: [[D, K, 'PEEKTEXT'], [K, D, '0x8bfc7d89e5894855']], mem: 'orig', rip: '-', st: '停住', hits: 0,
+    desc: 'debugger 不能直接讀 target 的記憶體（各自有 page table），只能請 kernel 代讀。little-endian：最低 byte 55 排在最前面。' },
+  { tag: '[B]', code: 'ptrace(PTRACE_POKETEXT, pid, addr, trap);', hops: [[D, K, 'POKETEXT'], [K, T, '寫入 0xCC（COW）']], mem: 'trap', rip: '-', st: '停住', hits: 0,
+    desc: '.text 是 r-x 唯讀，kernel 用 FOLL_FORCE 強制寫入，並觸發 Copy-on-Write：target 拿到私人頁面，磁碟上的檔案不受影響。' },
+  { tag: '[C]', code: 'ptrace(PTRACE_CONT, pid, 0, 0);', hops: [[D, K, 'PTRACE_CONT'], [K, T, '恢復執行']], mem: 'trap', rip: '-', st: '執行中', hits: 0,
+    desc: '讓 target 繼續跑：main 進入迴圈，呼叫 square(1)。' },
+  { tag: '[C]', code: '0x…139:  cc    int3', hops: [[T, K, 'int3 → #BP'], [K, T, 'SIGTRAP 停住']], mem: 'trap', rip: '13a', st: '停住', hits: 1,
+    desc: 'CPU 取到 0xCC，觸發 #BP exception。int3 是 1 byte 的 trap，所以回報的 rip 已經是 139 + 1 = 13a。' },
+  { tag: '[C]', code: 'waitpid(pid, &status, 0);', hops: [[K, D, 'waitpid 返回']], mem: 'trap', rip: '13a', st: '停住', hits: 1,
+    desc: 'kernel 通知 tracer：WIFSTOPPED，SIGTRAP。' },
+  { tag: '[D]', code: 'ptrace(PTRACE_GETREGS, pid, 0, &regs);', hops: [[D, K, 'GETREGS'], [K, D, 'rip=13a rdi=1']], mem: 'trap', rip: '13a', st: '停住', hits: 1,
+    desc: '讀出 target 停住時保存的暫存器。rdi 是第一個參數，所以 square(1) 的 x = 1。' },
+  { tag: '[E1]', code: 'ptrace(PTRACE_POKETEXT, pid, addr, orig);', hops: [[D, K, 'POKETEXT'], [K, T, '寫回 0x55']], mem: 'restored', rip: '13a', st: '停住', hits: 1,
+    desc: '要執行原本的 push %rbp，得先把原 byte 寫回去。' },
+  { tag: '[E2]', code: 'regs.rip = addr; SETREGS', hops: [[D, K, 'SETREGS'], [K, T, 'rip = 139']], mem: 'restored', rip: '139', st: '停住', hits: 1,
+    desc: 'rip 退回 1，指向斷點位置，也就是原本那條指令的開頭。' },
+  { tag: '[E3]', code: 'ptrace(PTRACE_SINGLESTEP, pid, 0, 0);', hops: [[D, K, 'SINGLESTEP'], [K, T, 'TF=1，只跑一條'], [T, K, '#DB → SIGTRAP']], mem: 'restored', rip: '13a', st: '停住', hits: 1,
+    desc: 'kernel 設定 EFLAGS.TF，target 只執行 push %rbp 一條指令，就因 #DB exception 再次停住。' },
+  { tag: '[E4]', code: 'ptrace(PTRACE_POKETEXT, pid, addr, trap);', hops: [[D, K, 'POKETEXT'], [K, T, '寫入 0xCC']], mem: 'trap', rip: '13a', st: '停住', hits: 1,
+    desc: '重新插回斷點，下一次呼叫 square 還會中。接著回到 [C]。' },
+  { tag: '迴圈', code: 'for (int hits = 1; ; hits++) { ... }', hops: [[D, K, 'CONT'], [K, T, 'square(2)、(3)'], [T, K, '… [C]~[E4] ×2']], mem: 'trap', rip: '13a', st: '停住', hits: 3,
+    desc: 'square(2)、square(3) 各自完整重複 [C]→[D]→[E1~E4]，rdi 分別讀到 2 和 3。' },
+  { tag: '結束', code: 'if (WIFEXITED(status)) break;', hops: [[D, K, 'PTRACE_CONT'], [T, K, 'exit(0)'], [K, D, 'WIFEXITED']], mem: 'trap', rip: '-', st: '已結束', hits: 3,
+    desc: 'main 返回後，target 呼叫 exit。waitpid 回傳 WIFEXITED，debugger 結束迴圈。' },
+];
+
+const $ = id => document.getElementById(id);
+const NS = 'http://www.w3.org/2000/svg';
+const mk = (tag, attrs) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
+let i = 0, timer = null, raf = null;
+
+S.forEach((_, k) => {
+  const d = document.createElement('span');
+  d.className = 'dot';
+  d.onclick = () => { stop(); go(k); };
+  $('dots').appendChild(d);
+});
+
+// Draw step n's static state (memory, rip, text) and its hop arrows, all dimmed
+function renderStep(n) {
+  const s = S[n];
+  $('tag').textContent = s.tag;
+  $('code').textContent = s.code;
+  $('desc').textContent = s.desc;
+  $('pos').textContent = (n + 1) + ' / ' + S.length;
+  [...$('dots').children].forEach((d, k) => d.classList.toggle('on', k === n));
+
+  const m = $('mem'); m.innerHTML = '';
+  ORIG.forEach((b, k) => {
+    const c = document.createElement('div'); c.className = 'cell';
+    if (!s.mem) c.textContent = '··';
+    else if (k === 0 && s.mem === 'trap') { c.textContent = 'cc'; c.classList.add('trap'); }
+    else if (k === 0 && s.mem === 'restored') { c.textContent = '55'; c.classList.add('restored'); }
+    else c.textContent = b;
+    m.appendChild(c);
+  });
+  $('rip').textContent = s.rip === '-' ? '-' : '…' + s.rip;
+  $('st').textContent = s.st;
+  $('hits').textContent = s.hits;
+
+  const g = $('hops'); g.innerHTML = '';
+  s.hops.forEach((h, k) => {
+    const y = 90 + k * 55, x1 = X[h[0]], x2 = X[h[1]], dir = x2 > x1 ? 1 : -1;
+    g.appendChild(mk('line', { id: 'h' + k, x1: x1 + dir * 8, y1: y, x2: x2 - dir * 10, y2: y,
+      style: 'stroke:var(--muted)', 'stroke-width': 1, 'marker-end': 'url(#arrow)', opacity: 0.15 }));
+    const t = mk('text', { id: 't' + k, x: (x1 + x2) / 2, y: y - 10, 'text-anchor': 'middle',
+      style: 'font-size:12px;fill:var(--text)', opacity: 0.15 });
+    t.textContent = h[2];
+    g.appendChild(t);
+  });
+}
+
+// Position the ball for step n at elapsed ms; deterministic so frames can be captured
+function drawFrame(n, ms) {
+  const hops = S[n].hops, ball = $('ball');
+  const k = Math.floor(ms / HOP_MS);
+  hops.forEach((_, j) => {
+    const on = j <= k ? 1 : 0.15;
+    $('h' + j).setAttribute('opacity', on);
+    $('t' + j).setAttribute('opacity', on);
+  });
+  if (k >= hops.length) { ball.setAttribute('cx', -20); return false; }
+  const p = (ms - k * HOP_MS) / HOP_MS;
+  const e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+  const h = hops[k];
+  ball.setAttribute('cx', X[h[0]] + (X[h[1]] - X[h[0]]) * e);
+  ball.setAttribute('cy', 90 + k * 55);
+  return true;
+}
+
+function animate() {
+  cancelAnimationFrame(raf);
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { drawFrame(i, 1e9); return; }
+  let t0 = null;
+  const f = ts => { if (t0 === null) t0 = ts; if (drawFrame(i, ts - t0)) raf = requestAnimationFrame(f); };
+  raf = requestAnimationFrame(f);
+}
+
+function go(n) { i = (n + S.length) % S.length; renderStep(i); animate(); }
+function stop() { clearInterval(timer); timer = null; $('play').textContent = '▶ 播放'; }
+
+$('next').onclick = () => { stop(); go(i + 1); };
+$('prev').onclick = () => { stop(); go(i - 1); };
+$('replay').onclick = () => go(i);
+$('play').onclick = () => {
+  if (timer) { stop(); return; }
+  $('play').textContent = '⏸ 暫停';
+  timer = setInterval(() => { if (i === S.length - 1) { stop(); return; } go(i + 1); }, 3200);
+};
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') { stop(); go(i + 1); }
+  if (e.key === 'ArrowLeft') { stop(); go(i - 1); }
+});
+
+// Hook for record.py: renders an exact frame without timers
+window.capture = { steps: S.length, hops: n => S[n].hops.length, HOP_MS,
+  frame(n, ms) { document.body.classList.add('capture'); cancelAnimationFrame(raf); renderStep(n); drawFrame(n, ms); } };
+
+go(0);
+</script>
+</body>
+</html>
